@@ -14,8 +14,49 @@ const jersey20 = Jersey_20({
 });
 
 export const metadata: Metadata = {
-  title: "DesignX Fest",
-  description: "A dynamic neubrutalism design fest experience.",
+  title: "DesignX Fest 2026 — The Ultimate Neubrutalism Design Experience",
+  description:
+    "DesignX Fest is the boldest design and tech festival of 2026. Compete in UI/UX challenges, attend hands-on workshops, and hear from world-class speakers. Coming soon.",
+  keywords: [
+    "DesignX",
+    "design fest",
+    "UI UX competition",
+    "design workshop",
+    "neubrutalism",
+    "design festival 2026",
+    "tech fest",
+  ],
+  authors: [{ name: "DesignX Team" }],
+  metadataBase: new URL("https://designxfest.com"),
+  openGraph: {
+    title: "DesignX Fest 2026 — The Ultimate Design Experience",
+    description:
+      "Compete, learn and get inspired at DesignX Fest — the most exciting design and tech festival of 2026. Coming Soon.",
+    url: "https://designxfest.com",
+    siteName: "DesignX Fest",
+    images: [
+      {
+        url: "/mascot.png",
+        width: 1200,
+        height: 630,
+        alt: "DesignX Fest 2026",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DesignX Fest 2026 — Coming Soon",
+    description:
+      "The boldest design festival is almost here. Competitions, workshops, and speakers — stay tuned!",
+    images: ["/mascot.png"],
+  },
+  themeColor: "#F7DD37",
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
