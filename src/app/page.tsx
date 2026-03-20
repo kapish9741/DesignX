@@ -48,7 +48,7 @@ const popIn = {
 
 export default function ComingSoonPage() {
     return (
-        <div className="min-h-screen w-full relative overflow-hidden bg-[#F7DD37] text-black" style={{ fontFamily: 'var(--font-montserrat)' }}>
+        <div className="min-h-screen w-full relative overflow-hidden bg-[#F7DD37] text-black bg-[url('/bg-texture.png')] bg-cover bg-center bg-blend-overlay" style={{ fontFamily: 'var(--font-montserrat)' }}>
 
             {/* Top Marquee */}
             <div className="absolute top-0 left-0 w-full overflow-hidden border-b-[3px] border-black bg-[#C4178A] text-white py-2 z-50">
