@@ -1,0 +1,39 @@
+Website Theme: Neubrutalism
+Fest name - DesignX Fest
+
+Typography:
+- Montserrat
+- Jersey 20
+
+Color Palette:
+- Navy: #182F58
+- Pink: #C4178A
+- Yellow: #F7DD37
+- White: #FFFFFF
+
+Homepage Sections:
+- Animated Hero Div
+- Timer Section (below hero)
+- Sponsors Section (space for 1 sponsor currently)
+- Events Section
+- Workshops Section
+- Gallery Section
+- "Random stuff" / decorative spacer sections in between
+
+Pages to Create:
+- Home
+- Events (Dedicated page listing all events)
+- Individual Event Pages (for all events and workshops)
+  - Note: Competition pages need a "Register Now" button
+- Contact Us
+
+References & Assets:
+- Reference Website: https://1pxdesignconf.iiitd.edu.in/
+- Mascot: (Acknowledged from user images)
+- Imagery & Motifs (from reference images): 
+  - Thick black borders and harsh, solid drop shadows (classic neubrutalism)
+  - 90s / Retro UI elements (Windows 95/OS classic dialog boxes, retro PCs, old browser windows)
+  - Playful geometric shapes (stars, pills, speech bubbles, smiley faces, arrows, floppy disks)
+  - Background textures (grid lines, checkerboards, halftone and abstract tech patterns)
+  - High-contrast, solid vibrant color blocks overlapping
+  - UI Accents (barcodes, stylized cursors, generic warning signs)
