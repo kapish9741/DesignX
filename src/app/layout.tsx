@@ -14,9 +14,9 @@ const jersey20 = Jersey_20({
 });
 
 export const metadata: Metadata = {
-  title: "DesignX Fest 2026 — The Ultimate Neubrutalism Design Experience",
+  title: "DesignX Fest '26 — April 17-18 @ Rishihood University",
   description:
-    "DesignX Fest is the boldest design and tech festival of 2026. Compete in UI/UX challenges, attend hands-on workshops, and hear from world-class speakers. Coming soon.",
+    "DesignX Fest is an annual design festival dedicated to fostering creativity, innovation, and interdisciplinary collaboration. Join us on April 17-18, 2026.",
   keywords: [
     "DesignX",
     "design fest",

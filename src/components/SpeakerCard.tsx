@@ -8,9 +8,10 @@ interface SpeakerCardProps {
   role: string;
   image: string;
   color?: string;
+  objectPosition?: string;
 }
 
-const SpeakerCard = ({ name, role, image, color = "#F7DD37" }: SpeakerCardProps) => {
+const SpeakerCard = ({ name, role, image, color = "#F7DD37", objectPosition = "center" }: SpeakerCardProps) => {
   return (
     <motion.div
       whileHover={{ y: -10, rotate: 1 }}
@@ -27,12 +28,25 @@ const SpeakerCard = ({ name, role, image, color = "#F7DD37" }: SpeakerCardProps)
 
       {/* Main Image Area */}
       <div className="relative h-[300px] w-full bg-gray-100 overflow-hidden">
-        <Image 
-          src={image} 
-          alt={name} 
-          fill 
-          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-        />
+        {image.includes('speakers_extra') ? (
+          <div 
+            className="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500"
+            style={{ 
+              backgroundImage: `url(${image})`,
+              backgroundSize: '400% 100%',
+              backgroundPosition: objectPosition,
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+        ) : (
+          <Image 
+            src={image} 
+            alt={name} 
+            fill 
+            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+            style={{ objectPosition }}
+          />
+        )}
         {/* "Hello my name is" tag overlay */}
         <div className="absolute top-4 right-4 bg-white border-2 border-black px-3 py-1 -rotate-6 shadow-[3px_3px_0px_#000]">
            <span className="text-[10px] font-black uppercase text-black">HELO MY NAME IS</span>
