@@ -60,8 +60,25 @@ export default function Home() {
         >
           <Star size={80} fill="currentColor" stroke="black" strokeWidth={3} />
         </motion.div>
+
+        {/* Authentic Mascot - Positioned Right & Tilted - BEHIND CONTENT */}
+        <motion.div
+          initial={{ x: 300, opacity: 0, rotate: 0 }}
+          animate={{ x: 0, opacity: 0.9, rotate: -10 }}
+          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.8 }}
+          className="absolute -right-20 md:-right-40 bottom-0 w-[450px] md:w-[850px] xl:w-[1100px] z-0 pointer-events-none drop-shadow-2xl"
+        >
+          <Image
+            src="/mascot.png"
+            alt="DesignX Mascot"
+            width={1200}
+            height={1500}
+            className="object-contain"
+            priority
+          />
+        </motion.div>
         
-        <div className="flex flex-col items-center max-w-7xl w-full">
+        <div className="flex flex-col items-center max-w-7xl w-full z-10 relative">
           {/* Main Title with Pixel Font */}
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -100,23 +117,6 @@ export default function Home() {
 
           {/* Countdown timer */}
           <Countdown />
-
-          {/* Authentic Mascot - Positioned Right & Tilted */}
-          <motion.div
-            initial={{ x: 300, opacity: 0, rotate: 0 }}
-            animate={{ x: 0, opacity: 1, rotate: -10 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.8 }}
-            className="absolute -right-20 bottom-0 w-[350px] md:w-[650px] z-10 pointer-events-none drop-shadow-2xl"
-          >
-            <Image
-              src="/mascot.png"
-              alt="DesignX Mascot"
-              width={800}
-              height={1000}
-              className="object-contain"
-              priority
-            />
-          </motion.div>
         </div>
       </section>
 
