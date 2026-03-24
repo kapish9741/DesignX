@@ -5,6 +5,7 @@ import Image from "next/image";
 import Countdown from "@/components/Countdown";
 import Marquee from "@/components/Marquee";
 import SpeakerCard from "@/components/SpeakerCard";
+import NumberTrail from "@/components/NumberTrail";
 import { Star, Trophy, Palette, Mic, ArrowRight, Zap, Target, Image as ImageIcon, Clock, Calendar, Github, Twitter, Instagram, Linkedin } from "lucide-react";
 
 export default function Home() {
@@ -28,6 +29,7 @@ export default function Home() {
   
   return (
     <div className="min-h-screen w-full bg-[#182F58] relative overflow-hidden flex flex-col pt-12">
+      <NumberTrail />
       {/* Background Texture Overlay */}
       <div className="absolute inset-0 z-0 opacity-15 pointer-events-none bg-[url('/bg-texture.png')] bg-repeat bg-center mix-blend-overlay"></div>
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-grain"></div>
@@ -99,22 +101,21 @@ export default function Home() {
           {/* Countdown timer */}
           <Countdown />
 
-          {/* Rockstar Mascot with transition image animation */}
+          {/* Authentic Mascot - Positioned Right & Tilted */}
           <motion.div
-            initial={{ y: 200, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.7 }}
-            className="relative mt-8 md:mt-[-40px] w-full max-w-[500px] h-[400px] md:h-[600px] flex justify-center items-end"
+            initial={{ x: 300, opacity: 0, rotate: 0 }}
+            animate={{ x: 0, opacity: 1, rotate: -10 }}
+            transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.8 }}
+            className="absolute -right-20 bottom-0 w-[350px] md:w-[650px] z-10 pointer-events-none drop-shadow-2xl"
           >
-            <div className="relative w-full h-full transform skew-y-2">
-               <Image 
-                src="/rockstar_mascot.png" 
-                alt="Rockstar Mascot" 
-                fill 
-                className="object-contain object-bottom drop-shadow-[15px_15px_0px_#000]" 
-                priority
-               />
-            </div>
+            <Image
+              src="/mascot.png"
+              alt="DesignX Mascot"
+              width={800}
+              height={1000}
+              className="object-contain"
+              priority
+            />
           </motion.div>
         </div>
       </section>
