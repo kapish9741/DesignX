@@ -5,6 +5,7 @@ import Image from "next/image";
 import Countdown from "@/components/Countdown";
 import Marquee from "@/components/Marquee";
 import SpeakerCard from "@/components/SpeakerCard";
+import SpeakerCarousel from "@/components/SpeakerCarousel";
 import NumberTrail from "@/components/NumberTrail";
 import { Star, Trophy, Palette, Mic, ArrowRight, Zap, Target, Image as ImageIcon, Clock, Calendar, Github, Twitter, Instagram, Linkedin } from "lucide-react";
 
@@ -38,7 +39,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#182F58] relative overflow-hidden flex flex-col pt-12">
+    <div className="min-h-screen w-full bg-designx-gradient relative overflow-hidden flex flex-col pt-12">
       <NumberTrail />
       {/* Background Texture Overlay */}
       <div className="absolute inset-0 z-0 opacity-15 pointer-events-none bg-[url('/bg-texture.png')] bg-repeat bg-center mix-blend-overlay"></div>
@@ -218,76 +219,18 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <SpeakerCard
-              name="Joy Banerjee"
-              role="Principal Designer, Blinkit"
-              image="/speaker1.png"
-              color="#F7DD37"
-            />
-            <motion.div initial={{ y: 40 }} animate={{ y: 0 }} transition={{ delay: 0.1 }}>
-              <SpeakerCard
-                name="Ankit Goswami"
-                role="Staff Designer, Expedia"
-                image="/speaker2.png"
-                color="#C4178A"
-              />
-            </motion.div>
-            <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}>
-              <SpeakerCard
-                name="Anil Reddy"
-                role="Keynote Speaker"
-                image="/speaker3.png"
-                color="#FC3BF0"
-              />
-            </motion.div>
-            <motion.div initial={{ y: 60 }} animate={{ y: 0 }} transition={{ delay: 0.3 }}>
-              <SpeakerCard
-                name="Tusharkant Cangia"
-                role="Creative Dir., Tata Elxsi"
-                image="/speaker4.png"
-                color="#182F58"
-              />
-            </motion.div>
-            
-            {/* Row 2 */}
-            <motion.div initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.4 }}>
-              <SpeakerCard
-                name="Shweta Hingane"
-                role="Founder, The.archart"
-                image="/speakers_extra.png"
-                color="#F7DD37"
-                objectPosition="0% center"
-              />
-            </motion.div>
-            <motion.div initial={{ y: -30 }} animate={{ y: 0 }} transition={{ delay: 0.5 }}>
-              <SpeakerCard
-                name="Parth & Akshat"
-                role="Founders, Hiredesigners"
-                image="/speakers_extra.png"
-                color="#C4178A"
-                objectPosition="33.33% center"
-              />
-            </motion.div>
-            <motion.div initial={{ y: 50 }} animate={{ y: 0 }} transition={{ delay: 0.6 }}>
-              <SpeakerCard
-                name="Nitin Nagdavane"
-                role="Design Head, Honda"
-                image="/speakers_extra.png"
-                color="#FC3BF0"
-                objectPosition="66.66% center"
-              />
-            </motion.div>
-            <motion.div initial={{ y: -10 }} animate={{ y: 0 }} transition={{ delay: 0.7 }}>
-              <SpeakerCard
-                name="Gavin Remedios"
-                role="Design Head, IBM"
-                image="/speakers_extra.png"
-                color="#182F58"
-                objectPosition="100% center"
-              />
-            </motion.div>
-          </div>
+          <SpeakerCarousel 
+            speakers={[
+              { name: "Joy Banerjee", role: "Principal Designer, Blinkit", image: "/speaker1.png", color: "#F7DD37" },
+              { name: "Ankit Goswami", role: "Staff Designer, Expedia", image: "/speaker2.png", color: "#C4178A" },
+              { name: "Anil Reddy", role: "Keynote Speaker", image: "/speaker3.png", color: "#FC3BF0" },
+              { name: "Tusharkant Cangia", role: "Creative Dir., Tata Elxsi", image: "/speaker4.png", color: "#182F58" },
+              { name: "Shweta Hingane", role: "Founder, The.archart", image: "/speakers_extra.png", color: "#F7DD37", objectPosition: "0% center" },
+              { name: "Parth & Akshat", role: "Founders, Hiredesigners", image: "/speakers_extra.png", color: "#C4178A", objectPosition: "33.33% center" },
+              { name: "Nitin Nagdavane", role: "Design Head, Honda", image: "/speakers_extra.png", color: "#FC3BF0", objectPosition: "66.66% center" },
+              { name: "Gavin Remedios", role: "Design Head, IBM", image: "/speakers_extra.png", color: "#182F58", objectPosition: "100% center" },
+            ]} 
+          />
         </div>
         <div className="absolute bottom-0 left-0 w-full h-[15px] checkered-bg-yellow opacity-40"></div>
       </section>

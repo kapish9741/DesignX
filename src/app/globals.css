@@ -123,3 +123,17 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
+/* Premium Multi-stop Gradient */
+.bg-designx-gradient {
+  background: linear-gradient(
+    180deg,
+    #182F58 0%,
+    #00c6ff 20%,
+    #0072ff 40%,
+    #8e2de2 60%,
+    #f43f5e 80%,
+    #ff0080 100%
+  );
+  background-attachment: fixed;
+}
+
