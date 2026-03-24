@@ -72,3 +72,54 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--brutal-shadow);
   padding: 1.5rem;
 }
+
+/* New Utility Classes for DesignX Rebuild */
+.checkered-bg-black {
+  background-image: linear-gradient(45deg, #000 25%, transparent 25%),
+    linear-gradient(-45deg, #000 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(-45deg, transparent 75%, #000 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px 5px, 5px 0;
+  background-color: #fff;
+}
+
+.checkered-bg-yellow {
+  background-image: linear-gradient(45deg, #000 25%, transparent 25%),
+    linear-gradient(-45deg, #000 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(-45deg, transparent 75%, #000 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px 5px, 5px 0;
+  background-color: var(--color-yellow);
+}
+
+.shadow-brutal-yellow {
+  box-shadow: 8px 8px 0px var(--color-yellow);
+}
+
+.shadow-brutal-pink {
+  box-shadow: 8px 8px 0px var(--color-pink);
+}
+
+.text-stroke-black {
+  -webkit-text-stroke: 1.5px black;
+}
+
+.bg-grain {
+  position: relative;
+}
+
+.bg-grain::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  z-index: 1;
+}
+

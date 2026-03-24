@@ -1,504 +1,338 @@
 "use client";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { Star, Glasses, Trophy, Palette, Mic } from "lucide-react";
+import Countdown from "@/components/Countdown";
+import Marquee from "@/components/Marquee";
+import SpeakerCard from "@/components/SpeakerCard";
+import { Star, Trophy, Palette, Mic, ArrowRight, Zap, Target, Image as ImageIcon, Clock, Calendar, Github, Twitter, Instagram, Linkedin } from "lucide-react";
 
-// Animation Variants
-const staggerContainer = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: { staggerChildren: 0.15, delayChildren: 0.3 }
-    }
-} as any;
+export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeDay, setActiveDay] = useState(1);
+  
+  const scheduleData = {
+    1: [
+      { time: "09:00 AM", title: "Registrations & Welcome Kit", speaker: "Core Team", type: "Admin" },
+      { time: "10:30 AM", title: "Opening Keynote: Future of Design", speaker: "Ananya Rao", type: "Keynote" },
+      { time: "12:00 PM", title: "UI/UX Battle: Round 1", speaker: "Various", type: "Competition" },
+      { time: "02:30 PM", title: "Workshop: Advanced Prototyping", speaker: "Marcus V.", type: "Workshop" }
+    ],
+    2: [
+      { time: "10:00 AM", title: "Morning Talk: Ethics in AI Design", speaker: "Siddharth Gupta", type: "Talk" },
+      { time: "11:30 AM", title: "Branding Challenge Final", speaker: "Various", type: "Competition" },
+      { time: "01:30 PM", title: "Artist Showcase: The Meta-Vibe", speaker: "Ishani S.", type: "Showcase" },
+      { time: "04:00 PM", title: "Awards & Closing Ceremony", speaker: "Core Team", type: "Closing" }
+    ]
+  };
+  
+  return (
+    <div className="min-h-screen w-full bg-[#182F58] relative overflow-hidden flex flex-col pt-12">
+      {/* Background Texture Overlay */}
+      <div className="absolute inset-0 z-0 opacity-15 pointer-events-none bg-[url('/bg-texture.png')] bg-repeat bg-center mix-blend-overlay"></div>
+      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-grain"></div>
 
-const cardVariant = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", damping: 12, stiffness: 100 }
-    }
-} as any;
+      {/* Top Navbar */}
+      <nav className="fixed top-0 left-0 w-full z-[100] bg-[#182F58] border-b-4 border-black px-6 py-4 flex justify-between items-center">
+        <div className="text-3xl font-black tracking-tighter text-[#F7DD37]" style={{ fontFamily: 'var(--font-display)' }}>
+          DesignX
+        </div>
+        <div className="hidden md:flex gap-8 text-sm font-black uppercase text-white">
+          <a href="#" className="hover:text-[#F7DD37] transition-colors">Home</a>
+          <a href="#about" className="hover:text-[#F7DD37] transition-colors">About</a>
+          <a href="#speakers" className="hover:text-[#F7DD37] transition-colors">Speakers</a>
+          <a href="#schedule" className="hover:text-[#F7DD37] transition-colors">Schedule</a>
+        </div>
+        <button className="bg-[#F7DD37] border-2 border-black px-4 py-1.5 font-black text-sm uppercase shadow-[4px_4px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+          Register
+        </button>
+      </nav>
 
-const navVariant = {
-    hidden: { opacity: 0, y: -20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-} as any;
-
-const scaleSnappy = {
-    hidden: { opacity: 0, scale: 0.8 },
-    show: {
-        opacity: 1,
-        scale: 1,
-        transition: { type: "spring", damping: 14, stiffness: 150, delay: 0.2 }
-    }
-} as any;
-
-const popIn = {
-    hidden: { opacity: 0, scale: 0.5, rotate: -20 },
-    show: {
-        opacity: 1,
-        scale: 1,
-        rotate: 0,
-        transition: { type: "spring", damping: 10, stiffness: 120, delay: 0.4 }
-    }
-} as any;
-
-const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
-} as any;
-
-export default function ComingSoonPage() {
-    return (
-        <div
-            className="min-h-screen w-full relative overflow-hidden bg-[#F7DD37] text-black bg-[url('/bg-texture.png')] bg-cover bg-center bg-blend-overlay"
-            style={{ fontFamily: 'var(--font-montserrat)' }}
+      {/* Hero Section */}
+      <section className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 pt-20 z-10 overflow-hidden">
+        {/* Floating Stars */}
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+          className="absolute top-1/4 left-10 text-[#F7DD37] opacity-40 md:opacity-80"
         >
-            {/* Top Marquee */}
-            <div className="absolute top-0 left-0 w-full overflow-hidden border-b-[3px] border-black bg-[#C4178A] text-white py-1.5 z-50">
-                <motion.div
-                    animate={{ x: [0, -1200] }}
-                    transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-                    className="whitespace-nowrap font-black text-sm md:text-xl tracking-widest uppercase flex gap-8 items-center"
-                    style={{ fontFamily: 'var(--font-jersey)' }}
-                >
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} className="flex gap-8 items-center">
-                            <span>EXCITING COMPETITIONS</span>
-                            <Star className="text-[#F7DD37] w-4 h-4 md:w-6 md:h-6 fill-current shrink-0" />
-                            <span>WORKSHOPS</span>
-                            <Star className="text-[#F7DD37] w-4 h-4 md:w-6 md:h-6 fill-current shrink-0" />
-                            <span>SPEAKERS</span>
-                            <Star className="text-[#F7DD37] w-4 h-4 md:w-6 md:h-6 fill-current shrink-0" />
-                            <span>DESIGNX FEST 2026</span>
-                            <Star className="text-[#F7DD37] w-4 h-4 md:w-6 md:h-6 fill-current shrink-0" />
-                        </div>
-                    ))}
-                </motion.div>
-            </div>
-
-            {/* Background Grid Lines */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.25 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                className="absolute inset-0 pointer-events-none mt-10"
+          <Star size={80} fill="currentColor" stroke="black" strokeWidth={3} />
+        </motion.div>
+        
+        <div className="flex flex-col items-center max-w-7xl w-full">
+          {/* Main Title with Pixel Font */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "backOut" }}
+            className="text-center relative"
+          >
+            <h1 
+              className="text-[15vw] md:text-[12rem] xl:text-[18rem] leading-[0.85] font-black uppercase tracking-tighter drop-shadow-[5px_5px_0px_rgba(0,0,0,0.8)]"
+              style={{ fontFamily: 'var(--font-display)', color: '#F7DD37', WebkitTextStroke: '2px black' }}
             >
-                <div className="absolute top-0 bottom-0 left-[50%] w-[1px] bg-white hidden md:block" />
-                <div className="absolute top-[30%] left-0 right-0 h-[1px] bg-white hidden md:block" />
-                <div className="absolute top-[65%] left-0 right-0 h-[1px] bg-white hidden md:block" />
+              DesignX
+            </h1>
+            <div className="absolute -top-10 -right-4 md:-top-16 md:-right-10 bg-white border-4 border-black p-2 md:p-3 rotate-12 shadow-[6px_6px_0px_#000] animate-bounce">
+               <span className="text-xl md:text-3xl font-black text-[#C4178A]" style={{ fontFamily: 'var(--font-display)' }}>Fest 2026</span>
+            </div>
+          </motion.div>
+
+          {/* Subtitle & Info Tags */}
+          <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ delay: 0.5 }}
+             className="flex flex-wrap justify-center gap-4 mt-8 md:mt-2 w-full"
+          >
+            <div className="bg-[#C4178A] text-white border-2 border-black px-4 py-2 font-black uppercase text-sm -rotate-2 shadow-[4px_4px_0px_#000]">
+              21 & 22 March
+            </div>
+            <div className="bg-white text-black border-2 border-black px-4 py-2 font-black uppercase text-sm rotate-1 shadow-[4px_4px_0px_#000]">
+              Autonomous Campus
+            </div>
+            <div className="bg-[#182F58] text-[#F7DD37] border-2 border-black px-4 py-2 font-black uppercase text-sm -rotate-1 shadow-[4px_4px_0px_#000]">
+              St. Joseph&apos;s College
+            </div>
+          </motion.div>
+
+          {/* Countdown timer */}
+          <Countdown />
+
+          {/* Rockstar Mascot with transition image animation */}
+          <motion.div
+            initial={{ y: 200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.7 }}
+            className="relative mt-8 md:mt-[-40px] w-full max-w-[500px] h-[400px] md:h-[600px] flex justify-center items-end"
+          >
+            <div className="relative w-full h-full transform skew-y-2">
+               <Image 
+                src="/rockstar_mascot.png" 
+                alt="Rockstar Mascot" 
+                fill 
+                className="object-contain object-bottom drop-shadow-[15px_15px_0px_#000]" 
+                priority
+               />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Scrolling Text Marquee */}
+      <div className="z-50 -mt-10 md:-mt-20">
+        <Marquee text="DesignX Fest 2026 ★ Register Now ★ Designing the Future ★ Innovation & Creativity" />
+      </div>
+
+      {/* About Section - Bento Grid */}
+      <section id="about" className="relative w-full bg-white py-20 px-6 border-b-4 border-black z-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-16">
+            <h2 className="text-6xl md:text-8xl font-black text-[#182F58] uppercase tracking-tighter" style={{ fontFamily: 'var(--font-display)' }}>
+               The Design <br /> <span className="text-[#C4178A]">Breakthrough</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-auto md:h-[800px]">
+            {/* Feature 1: Main Event */}
+            <motion.div 
+               whileHover={{ scale: 0.98 }}
+               className="md:col-span-2 md:row-span-2 bg-[#F7DD37] border-4 border-black p-8 shadow-[8px_8px_0px_#000] flex flex-col justify-between relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 opacity-20 rotate-12">
+                 <Zap size={140} fill="black" />
+              </div>
+              <div>
+                <span className="bg-black text-white px-3 py-1 font-black text-xs uppercase mb-4 inline-block">Flagship Event</span>
+                <h3 className="text-5xl font-black text-[#182F58] leading-none mb-6" style={{ fontFamily: 'var(--font-display)' }}>The Grand <br /> Design Arena</h3>
+                <p className="font-bold text-lg max-w-sm">Witness the most intense creative showdown of 2026. From branding to digital experiences, we rethink everything.</p>
+              </div>
+              <button className="flex items-center gap-2 font-black uppercase group">
+                 Learn More <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+              </button>
             </motion.div>
 
-            {/* Navbar */}
-            <motion.nav
-                variants={navVariant}
-                initial="hidden"
-                animate="show"
-                className="absolute top-10 w-full px-4 md:px-6 py-4 flex justify-between items-center z-40"
+            {/* Feature 2: Workshops */}
+            <motion.div 
+               whileHover={{ scale: 0.98 }}
+               className="md:col-span-2 bg-[#C4178A] border-4 border-black p-8 shadow-[8px_8px_0px_#000] flex justify-between items-center relative"
             >
-                <div className="text-2xl md:text-3xl font-black tracking-tighter">
-                    <span className="text-[#C4178A]">Design</span><span className="text-black">X</span>
-                </div>
+              <div className="z-10">
+                <h3 className="text-4xl font-black text-white leading-none mb-4" style={{ fontFamily: 'var(--font-display)' }}>Hands-On <br /> Workshops</h3>
+                <p className="text-white font-bold opacity-90 max-w-xs">Master industry tools with world-class mentors.</p>
+              </div>
+              <div className="bg-white p-4 border-4 border-black rotate-6 shadow-[4px_4px_0px_#000]">
+                 <Palette size={48} className="text-[#C4178A]" />
+              </div>
+            </motion.div>
 
-                <div className="hidden md:flex items-center gap-6 text-sm font-bold">
-                    <motion.div
-                        whileHover={{ scale: 1.05, rotate: 0 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="px-5 py-2 border-2 border-black rounded-full shadow-[4px_4px_0px_#000] bg-white transform -rotate-2 cursor-pointer hover:bg-gray-100 transition-colors"
-                    >
-                        Home
-                    </motion.div>
-                    <span className="cursor-pointer hover:underline decoration-2">Events</span>
-                    <span className="cursor-pointer hover:underline decoration-2">Workshops</span>
-                    <span className="cursor-pointer hover:underline decoration-2">Gallery</span>
-                    <span className="cursor-pointer hover:underline decoration-2">Contact</span>
-                </div>
+            {/* Feature 3: Pattern Box */}
+            <div className="bg-blue-600 border-4 border-black shadow-[8px_8px_0px_#000] relative overflow-hidden hidden md:block">
+               <div className="absolute inset-0 bg-[url('/dancing_pattern.png')] bg-cover opacity-60 mix-blend-overlay"></div>
+               <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-white font-black text-6xl opacity-40 rotate-12 whitespace-nowrap">DESIGNX VIBE</span>
+               </div>
+            </div>
 
-                {/* Hamburger */}
-                <div className="flex flex-col gap-[5px] mt-1 cursor-pointer group hover:opacity-80 transition-opacity">
-                    <div className="w-7 h-[3px] bg-black transition-all group-hover:w-5" />
-                    <div className="w-7 h-[3px] bg-black" />
-                    <div className="w-4 h-[3px] bg-black translate-x-3 transition-all group-hover:w-7 group-hover:translate-x-0" />
-                </div>
-            </motion.nav>
-
-            {/* ── DESKTOP LAYOUT ── */}
-            <main className="hidden lg:flex relative w-full min-h-screen items-center justify-center pt-28 pb-12">
-
-                {/* Left text panel */}
-                <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute left-8 xl:left-14 top-[28%] max-w-[200px] z-20"
-                >
-                    <motion.div
-                        whileHover={{ rotate: 0, scale: 1.02 }}
-                        className="border-[3px] border-black bg-white p-3 shadow-[4px_4px_0px_#000] rotate-2 mb-8 transition-transform"
-                    >
-                        <p className="text-sm font-bold leading-relaxed text-black">
-                            Join the ultimate gathering of creative minds! Experience hands-on workshops, portfolio reviews, and groundbreaking design talks.
-                        </p>
-                    </motion.div>
-                </motion.div>
-
-                {/* Coming Soon card */}
-                <motion.div
-                    initial={{ rotate: -15, x: -80, opacity: 0, scale: 0.8 }}
-                    animate={{ rotate: -5, x: 0, opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4, type: "spring", damping: 15, stiffness: 100 }}
-                    whileHover={{ scale: 1.02, rotate: -3 }}
-                    className="absolute left-8 md:left-20 bottom-[14%] w-60 bg-slate-100 border-[3px] border-black p-4 z-30 shadow-[-10px_10px_0px_rgba(0,0,0,1)] cursor-crosshair"
-                    style={{ borderRadius: "8px 8px 8px 32px" }}
-                >
-                    <div className="absolute -top-5 -left-5 bg-white border-2 border-black rounded-full p-2 shadow-[2px_2px_0px_#000]">
-                        <Glasses className="w-5 h-5" />
-                    </div>
-                    <div className="text-4xl font-black leading-none mb-2 tracking-tighter" style={{ fontFamily: 'var(--font-jersey)' }}>
-                        Coming<br />Soon
-                    </div>
-                    <div className="inline-block bg-[#F7DD37] border-2 border-black text-xs font-bold px-3 py-1 rounded-full mb-3 shadow-[2px_2px_0px_#000]">
-                        Join Our Campaign
-                    </div>
-                    <div className="bg-white border-2 border-black font-medium text-xs p-3 rounded-md mb-2 shadow-[2px_2px_0px_#000]">
-                        Get ready for the biggest design festival of the year! Exclusive workshops and competitions waiting for you.
-                    </div>
-                    <div className="text-[10px] text-center font-bold uppercase border-t-2 border-black border-b-2 pt-1 pb-1 mt-2">
-                        Terms and conditions apply
-                    </div>
-                </motion.div>
-
-                {/* Right Event Cards */}
-                <motion.div
-                    variants={staggerContainer}
-                    initial="hidden"
-                    animate="show"
-                    className="absolute right-4 md:right-10 xl:right-20 top-[18%] w-[270px] z-20 flex flex-col gap-4"
-                >
-                    <motion.div
-                        variants={cardVariant}
-                        whileHover={{ scale: 1.03, x: -5, y: -5, boxShadow: '12px 12px 0px #000', rotate: 2 }}
-                        className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] cursor-pointer rotate-1"
-                    >
-                        <div className="flex items-center justify-between mb-2 border-b-[3px] border-black pb-2">
-                            <h3 className="font-black text-xl tracking-tight" style={{ fontFamily: 'var(--font-jersey)' }}>COMPETITIONS</h3>
-                            <Trophy className="w-5 h-5 text-black shrink-0" strokeWidth={2.5} />
-                        </div>
-                        <p className="text-xs font-bold text-black border-l-4 border-[#C4178A] pl-2">Showcase your skills in intense, fast-paced UI/UX challenges.</p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={cardVariant}
-                        whileHover={{ scale: 1.03, x: -5, y: -5, boxShadow: '12px 12px 0px #000', rotate: 0 }}
-                        className="bg-[#C4178A] text-black border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] cursor-pointer -rotate-2"
-                    >
-                        <div className="flex items-center justify-between mb-2 border-b-[3px] border-black pb-2">
-                            <h3 className="font-black text-xl tracking-tight" style={{ fontFamily: 'var(--font-jersey)' }}>WORKSHOPS</h3>
-                            <Palette className="w-5 h-5 text-black shrink-0" strokeWidth={2.5} />
-                        </div>
-                        <p className="text-xs font-bold text-white border-l-4 border-black pl-2">Learn hands-on from industry design experts and elevate your craft.</p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={cardVariant}
-                        whileHover={{ scale: 1.03, x: -5, y: -5, boxShadow: '12px 12px 0px #000', rotate: -2 }}
-                        className="bg-[#182F58] text-white border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] cursor-pointer rotate-1"
-                    >
-                        <div className="flex items-center justify-between mb-2 border-b-[3px] border-white pb-2">
-                            <h3 className="font-black text-xl tracking-tight" style={{ fontFamily: 'var(--font-jersey)', color: '#FFFFFF' }}>GUEST LECTURES</h3>
-                            <Mic className="w-5 h-5 text-white shrink-0" strokeWidth={2.5} />
-                        </div>
-                        <p className="text-xs font-bold text-[#C4178A] border-l-4 border-[#C4178A] pl-2">Inspiring talks from renowned creators and design leaders.</p>
-                    </motion.div>
-                </motion.div>
-
-                {/* Date badge */}
-                <motion.div
-                    variants={popIn}
-                    initial="hidden"
-                    animate="show"
-                    className="absolute right-[8%] bottom-[10%] z-20 flex items-center justify-center cursor-pointer"
-                    whileHover={{ scale: 1.1 }}
-                >
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-                        className="w-36 h-36 bg-black"
-                        style={{ clipPath: 'polygon(50% 0%, 58% 11%, 69% 4%, 72% 17%, 85% 15%, 83% 28%, 96% 31%, 89% 42%, 100% 50%, 89% 58%, 96% 69%, 83% 72%, 85% 85%, 72% 83%, 69% 96%, 58% 89%, 50% 100%, 42% 89%, 31% 96%, 28% 83%, 15% 85%, 17% 72%, 4% 69%, 11% 58%, 0% 50%, 11% 42%, 4% 31%, 17% 28%, 15% 15%, 28% 17%, 31% 4%, 42% 11%)' }}
-                    />
-                    <div className="absolute text-center rotate-[-10deg] pointer-events-none">
-                        <span className="block font-black text-base text-[#F7DD37] leading-tight" style={{ fontFamily: 'var(--font-jersey)' }}>TO BE<br />ANNOUNCED</span>
-                    </div>
-                </motion.div>
-
-                {/* Center Composition */}
-                <div className="relative flex flex-col items-center justify-center w-full max-w-4xl mx-auto h-[600px]">
-                    {/* Background "DESIGNX" text */}
-                    <motion.div
-                        initial={{ scale: 0.8, opacity: 0, y: 50 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute text-[12rem] xl:text-[16rem] font-black tracking-tighter text-black leading-none whitespace-nowrap z-0 select-none opacity-90"
-                        style={{ fontFamily: 'var(--font-montserrat)', top: '10%', left: '50%', transform: 'translateX(-50%)' }}
-                    >
-                        DES<span className="opacity-0">IG</span>NX
-                    </motion.div>
-
-                    {/* Vertical "FEST" text */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-                        className="absolute left-[8%] xl:left-[16%] top-[15%] font-black text-transparent opacity-80 z-10"
-                        style={{
-                            WebkitTextStroke: '3px black',
-                            fontSize: '8rem',
-                            fontFamily: 'var(--font-montserrat)',
-                            writingMode: 'vertical-rl',
-                            transform: 'rotate(180deg)',
-                            lineHeight: '0.8'
-                        }}
-                    >
-                        FEST
-                    </motion.div>
-
-                    {/* Mascot */}
-                    <motion.div
-                        variants={scaleSnappy}
-                        initial="hidden"
-                        animate="show"
-                        whileHover={{ scale: 1.05, translateY: -10 }}
-                        className="relative z-20 h-[500px] xl:h-[600px] w-full flex justify-center items-end"
-                    >
-                        <div className="relative w-[300px] xl:w-[400px] h-full">
-                            <Image src="/mascot.png" alt="DesignX Fest Mascot" fill style={{ objectFit: 'contain', objectPosition: 'bottom center' }} priority />
-                        </div>
-                    </motion.div>
-
-                    {/* "VIBE" foreground text */}
-                    <motion.div
-                        initial={{ scale: 1.5, opacity: 0, rotate: -15 }}
-                        animate={{ scale: 1, opacity: 1, rotate: -4 }}
-                        transition={{ type: "spring", damping: 12, stiffness: 130, delay: 0.5 }}
-                        className="absolute top-[50%] z-30 pointer-events-none"
-                    >
-                        <h1
-                            className="text-[7rem] xl:text-[10rem] font-black tracking-tighter leading-none"
-                            style={{
-                                color: '#C4178A',
-                                fontFamily: 'var(--font-montserrat)',
-                                textShadow: '5px 5px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 10px 10px 0 #000'
-                            }}
-                        >
-                            VIBE
-                        </h1>
-                    </motion.div>
-
-                    {/* Stay Tuned button */}
-                    <div className="absolute bottom-0 z-40">
-                        <motion.div
-                            initial={{ y: 50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1, rotate: 2 }}
-                            transition={{ type: "spring", damping: 12, stiffness: 100, delay: 0.7 }}
-                            whileHover={{ y: -5, x: -5, boxShadow: '12px 12px 0px #000', rotate: 0 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="bg-[#C4178A] text-black border-[4px] border-black px-10 py-4 rounded-xl shadow-[8px_8px_0px_#000] cursor-pointer"
-                        >
-                            <h2 className="text-3xl xl:text-4xl font-black tracking-widest uppercase" style={{ fontFamily: 'var(--font-jersey)' }}>Stay Tuned!!!</h2>
-                        </motion.div>
-                        <div className="absolute -inset-1 bg-[#182F58] border-[4px] border-black rounded-xl z-[-1] translate-y-3 -translate-x-2" />
-                    </div>
-                </div>
-
-                {/* Decorative elements */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9, type: "spring" }}
-                    className="absolute top-[22%] left-[22%] z-10 rotate-12"
-                >
-                    <Star className="text-[#F7DD37] w-10 h-10 fill-current stroke-black stroke-2" />
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, x: -20, y: 20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 1, type: "spring" }}
-                    whileHover={{ rotate: -5, scale: 1.1 }}
-                    className="absolute top-[42%] left-[6%] z-10 w-12 h-12 bg-white border-2 border-black p-1 shadow-[3px_3px_0px_#000] cursor-pointer"
-                >
-                    <Image src="/window.svg" alt="Retro Window" width={40} height={40} className="opacity-80" />
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, x: 20, y: 20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 0.8, type: "spring" }}
-                    whileHover={{ rotate: 45, scale: 1.1 }}
-                    className="absolute bottom-[22%] right-[31%] z-10 w-14 h-14 bg-[#F7DD37] border-4 border-black p-2 shadow-[4px_4px_0px_#000] rotate-12 rounded-full cursor-pointer"
-                >
-                    <Image src="/globe.svg" alt="Globe" width={60} height={60} className="w-full h-full object-contain" />
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.1, type: "spring" }}
-                    className="absolute top-[32%] right-[22%] z-10 w-10 h-10 -rotate-12"
-                    style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)', backgroundColor: '#C4178A', border: '2px solid black', boxShadow: '2px 2px 0 #000' }}
-                />
-
-                {/* Jagged bottom wave */}
-                <motion.div
-                    initial={{ y: 100 }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute bottom-0 left-0 right-0 h-24 bg-black z-10"
-                    style={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 30%, 95% 45%, 85% 20%, 75% 50%, 65% 15%, 55% 40%, 45% 10%, 35% 55%, 25% 20%, 15% 45%, 5% 25%, 0% 50%)' }}
-                />
-            </main>
-
-            {/* ── MOBILE LAYOUT ── */}
-            <main className="lg:hidden relative w-full min-h-screen flex flex-col items-center pt-24 pb-16 px-4 gap-6">
-
-                {/* Mascot + VIBE section */}
-                <div className="relative w-full flex justify-center items-end h-[320px] sm:h-[380px]">
-                    {/* Big BG text */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
-                    >
-                        <span
-                            className="text-[6rem] sm:text-[8rem] font-black text-black opacity-80 tracking-tighter leading-none whitespace-nowrap"
-                            style={{ fontFamily: 'var(--font-montserrat)' }}
-                        >
-                            DESIGNX
-                        </span>
-                    </motion.div>
-
-                    {/* Mascot */}
-                    <motion.div
-                        variants={scaleSnappy}
-                        initial="hidden"
-                        animate="show"
-                        className="relative z-10 w-[220px] sm:w-[280px] h-full"
-                    >
-                        <Image src="/mascot.png" alt="DesignX Fest Mascot" fill style={{ objectFit: 'contain', objectPosition: 'bottom center' }} priority />
-                    </motion.div>
-
-                    {/* VIBE text */}
-                    <motion.div
-                        initial={{ scale: 1.5, opacity: 0, rotate: -15 }}
-                        animate={{ scale: 1, opacity: 1, rotate: -4 }}
-                        transition={{ type: "spring", damping: 12, stiffness: 130, delay: 0.5 }}
-                        className="absolute bottom-4 left-0 z-20 pointer-events-none"
-                    >
-                        <h1
-                            className="text-[5rem] sm:text-[6.5rem] font-black tracking-tighter leading-none"
-                            style={{
-                                color: '#C4178A',
-                                fontFamily: 'var(--font-montserrat)',
-                                textShadow: '4px 4px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 8px 8px 0 #000'
-                            }}
-                        >
-                            VIBE
-                        </h1>
-                    </motion.div>
-                </div>
-
-                {/* Stay Tuned button */}
-                <motion.div
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1, rotate: 1 }}
-                    transition={{ type: "spring", damping: 12, stiffness: 100, delay: 0.5 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative bg-[#C4178A] text-black border-[4px] border-black px-8 py-3 rounded-xl shadow-[6px_6px_0px_#000] cursor-pointer w-full max-w-xs text-center"
-                >
-                    <h2 className="text-2xl font-black tracking-widest uppercase" style={{ fontFamily: 'var(--font-jersey)' }}>Stay Tuned!!!</h2>
-                    <div className="absolute -inset-1 bg-[#182F58] border-[4px] border-black rounded-xl z-[-1] translate-y-2 -translate-x-1" />
-                </motion.div>
-
-                {/* Coming Soon Card */}
-                <motion.div
-                    variants={fadeUp}
-                    initial="hidden"
-                    animate="show"
-                    className="w-full max-w-sm bg-slate-100 border-[3px] border-black p-4 shadow-[-8px_8px_0px_rgba(0,0,0,1)] relative"
-                    style={{ borderRadius: "8px 8px 8px 24px" }}
-                >
-                    <div className="absolute -top-4 -left-4 bg-white border-2 border-black rounded-full p-2 shadow-[2px_2px_0px_#000]">
-                        <Glasses className="w-5 h-5" />
-                    </div>
-                    <div className="text-3xl font-black leading-none mb-2 tracking-tighter" style={{ fontFamily: 'var(--font-jersey)' }}>
-                        Coming<br />Soon
-                    </div>
-                    <div className="inline-block bg-[#F7DD37] border-2 border-black text-xs font-bold px-3 py-1 rounded-full mb-2 shadow-[2px_2px_0px_#000]">
-                        Join Our Campaign
-                    </div>
-                    <div className="bg-white border-2 border-black font-medium text-xs p-3 rounded-md shadow-[2px_2px_0px_#000]">
-                        Get ready for the biggest design festival of the year! Exclusive workshops and competitions.
-                    </div>
-                </motion.div>
-
-                {/* Event Cards */}
-                <motion.div
-                    variants={staggerContainer}
-                    initial="hidden"
-                    animate="show"
-                    className="w-full max-w-sm flex flex-col gap-4"
-                >
-                    <motion.div
-                        variants={cardVariant}
-                        className="bg-white border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] rotate-[0.5deg]"
-                    >
-                        <div className="flex items-center justify-between mb-2 border-b-[3px] border-black pb-2">
-                            <h3 className="font-black text-xl tracking-tight" style={{ fontFamily: 'var(--font-jersey)' }}>COMPETITIONS</h3>
-                            <Trophy className="w-5 h-5 text-black shrink-0" strokeWidth={2.5} />
-                        </div>
-                        <p className="text-xs font-bold text-black border-l-4 border-[#C4178A] pl-2">Showcase your skills in intense, fast-paced UI/UX challenges.</p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={cardVariant}
-                        className="bg-[#C4178A] text-white border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] -rotate-[0.5deg]"
-                    >
-                        <div className="flex items-center justify-between mb-2 border-b-[3px] border-black pb-2">
-                            <h3 className="font-black text-xl tracking-tight" style={{ fontFamily: 'var(--font-jersey)' }}>WORKSHOPS</h3>
-                            <Palette className="w-5 h-5 text-black shrink-0" strokeWidth={2.5} />
-                        </div>
-                        <p className="text-xs font-bold text-white border-l-4 border-black pl-2">Learn hands-on from industry design experts and elevate your craft.</p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={cardVariant}
-                        className="bg-[#182F58] border-[3px] border-black p-4 shadow-[4px_4px_0px_#000] rotate-[0.5deg]"
-                    >
-                        <div className="flex items-center justify-between mb-2 border-b-[3px] border-white pb-2">
-                            <h3 className="font-black text-xl tracking-tight" style={{ fontFamily: 'var(--font-jersey)', color: '#FFFFFF' }}>GUEST LECTURES</h3>
-                            <Mic className="w-5 h-5 text-white shrink-0" strokeWidth={2.5} />
-                        </div>
-                        <p className="text-xs font-bold text-[#C4178A] border-l-4 border-[#C4178A] pl-2">Inspiring talks from renowned creators and design leaders.</p>
-                    </motion.div>
-                </motion.div>
-
-                {/* Date Badge (mobile) */}
-                <motion.div
-                    variants={popIn}
-                    initial="hidden"
-                    animate="show"
-                    className="flex items-center justify-center cursor-pointer"
-                    whileHover={{ scale: 1.1 }}
-                >
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-                        className="w-28 h-28 bg-black"
-                        style={{ clipPath: 'polygon(50% 0%, 58% 11%, 69% 4%, 72% 17%, 85% 15%, 83% 28%, 96% 31%, 89% 42%, 100% 50%, 89% 58%, 96% 69%, 83% 72%, 85% 85%, 72% 83%, 69% 96%, 58% 89%, 50% 100%, 42% 89%, 31% 96%, 28% 83%, 15% 85%, 17% 72%, 4% 69%, 11% 58%, 0% 50%, 11% 42%, 4% 31%, 17% 28%, 15% 15%, 28% 17%, 31% 4%, 42% 11%)' }}
-                    />
-                    <div className="absolute text-center rotate-[-10deg] pointer-events-none">
-                        <span className="block font-black text-sm text-[#F7DD37] leading-tight" style={{ fontFamily: 'var(--font-jersey)' }}>TO BE<br />ANNOUNCED</span>
-                    </div>
-                </motion.div>
-
-                {/* Bottom black bar */}
-                <div className="w-full h-16 bg-black -mb-16 mt-auto"
-                    style={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 20%, 95% 45%, 85% 10%, 75% 50%, 65% 5%, 55% 40%, 45% 5%, 35% 50%, 25% 15%, 15% 45%, 5% 20%, 0% 50%)' }}
-                />
-            </main>
+            {/* Feature 4: Speaker Invite */}
+            <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_#000] flex flex-col justify-center gap-4">
+               <div className="flex items-center gap-2">
+                  <Star fill="#F7DD37" className="text-black" />
+                  <span className="font-black text-sm uppercase">Global Expertise</span>
+               </div>
+               <h3 className="text-3xl font-black leading-tight" style={{ fontFamily: 'var(--font-display)' }}>Hear from the Visionaries</h3>
+               <ArrowRight />
+            </div>
+          </div>
         </div>
-    );
+      </section>
+
+      {/* Speakers Section */}
+      <section id="speakers" className="relative w-full bg-[#182F58] py-24 px-6 border-b-4 border-black z-20 overflow-hidden">
+         {/* Background Decoration */}
+         <div className="absolute top-0 left-0 w-full h-[15px] checkered-bg-yellow opacity-40"></div>
+         <div className="absolute left-[10%] top-[40%] text-white opacity-5 select-none font-black text-[15vw] pointer-events-none rotate-12" style={{ fontFamily: 'var(--font-display)' }}>
+           EXPERTS
+         </div>
+
+         <div className="max-w-7xl mx-auto relative z-10">
+           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+              <div className="bg-white border-4 border-black p-6 inline-block shadow-[8px_8px_0px_#F7DD37] rotate-[-2deg]">
+                <h2 className="text-5xl md:text-7xl font-black text-[#182F58] uppercase leading-none" style={{ fontFamily: 'var(--font-display)' }}>
+                   Upcoming <br /> <span className="text-[#C4178A]">Speakers</span>
+                </h2>
+              </div>
+              <p className="text-white font-bold max-w-sm text-lg border-l-4 border-[#F7DD37] pl-4">
+                 Our lineup of speakers includes industry pioneers, creative rebels, and visionaries shaping the next generation of design.
+              </p>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <SpeakerCard 
+                name="Siddharth Gupta" 
+                role="Principal Designer, Meta" 
+                image="/speaker1.png"
+                color="#F7DD37"
+              />
+              <motion.div initial={{ y: 40 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}>
+                <SpeakerCard 
+                  name="Ananya Rao" 
+                  role="Creative Director, Airbnb" 
+                  image="/speaker2.png"
+                  color="#C4178A"
+                />
+              </motion.div>
+              <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.1 }}>
+                <SpeakerCard 
+                  name="Marcus V." 
+                  role="Head of UX, Figma" 
+                  image="/speaker3.png"
+                  color="#FC3BF0"
+                />
+              </motion.div>
+              <motion.div initial={{ y: 60 }} animate={{ y: 0 }} transition={{ delay: 0.3 }}>
+                 <SpeakerCard 
+                  name="Ishani S." 
+                  role="Independent Artist" 
+                  image="/speaker4.png"
+                  color="#182F58"
+                />
+              </motion.div>
+           </div>
+         </div>
+         <div className="absolute bottom-0 left-0 w-full h-[15px] checkered-bg-yellow opacity-40"></div>
+      </section>
+
+      {/* Schedule Section */}
+      <section id="schedule" className="relative w-full bg-[#C4178A] py-24 px-6 border-b-4 border-black z-20">
+         <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+               <h2 className="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter mb-8" style={{ fontFamily: 'var(--font-display)' }}>
+                  Event <span className="text-[#182F58]">Schedule</span>
+               </h2>
+               
+               {/* Day Tabs */}
+               <div className="flex justify-center gap-4">
+                  {[1, 2].map(day => (
+                    <button 
+                      key={day}
+                      onClick={() => setActiveDay(day)}
+                      className={`px-8 py-3 font-black uppercase text-xl border-4 border-black transition-all shadow-[6px_6px_0px_#000] active:shadow-none active:translate-x-1 active:translate-y-1 ${activeDay === day ? 'bg-[#F7DD37] text-black' : 'bg-white text-black'}`}
+                    >
+                      Day {day}
+                    </button>
+                  ))}
+               </div>
+            </div>
+
+            <motion.div 
+               key={activeDay}
+               initial={{ opacity: 0, x: 20 }}
+               animate={{ opacity: 1, x: 0 }}
+               className="flex flex-col gap-6"
+            >
+               {scheduleData[activeDay as keyof typeof scheduleData].map((item, idx) => (
+                  <div key={idx} className="bg-white border-4 border-black p-6 shadow-[8px_8px_0px_#000] flex flex-col md:flex-row md:items-center justify-between group hover:-translate-y-1 transition-transform">
+                     <div className="flex items-center gap-6">
+                        <div className="bg-[#182F58] text-[#F7DD37] p-4 border-2 border-black rotate-[-3deg] shadow-[4px_4px_0px_#000] min-w-[120px] text-center">
+                           <span className="font-black text-xl">{item.time}</span>
+                        </div>
+                        <div>
+                           <h4 className="text-2xl font-black text-[#182F58] uppercase" style={{ fontFamily: 'var(--font-display)' }}>{item.title}</h4>
+                           <span className="text-sm font-bold text-[#C4178A] uppercase">{item.speaker}</span>
+                        </div>
+                     </div>
+                     <div className="mt-4 md:mt-0 px-4 py-1.5 border-2 border-black font-black text-xs uppercase bg-gray-100 italic">
+                        {item.type}
+                     </div>
+                  </div>
+               ))}
+            </motion.div>
+         </div>
+      </section>
+
+      {/* Footer Section */}
+      <footer className="relative w-full bg-white py-20 px-6 z-20 overflow-hidden">
+         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div className="max-w-md">
+               <h2 className="text-5xl font-black text-[#182F58] uppercase tracking-tighter mb-6" style={{ fontFamily: 'var(--font-display)' }}>DesignX</h2>
+               <p className="font-bold text-lg mb-8">Pushing the boundaries of creativity and technology. Join us for the most unapologetic design festival of the decade.</p>
+               <div className="flex gap-4">
+                  {[Twitter, Instagram, Github, Linkedin].map((Icon, idx) => (
+                    <a key={idx} href="#" className="p-3 border-2 border-black hover:bg-[#F7DD37] transition-all shadow-[4px_4px_0px_#000] active:shadow-none hover:-translate-y-1">
+                       <Icon size={24} />
+                    </a>
+                  ))}
+               </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-12 w-full md:w-auto">
+               <div className="flex flex-col gap-4">
+                  <span className="font-black uppercase text-[#C4178A] text-sm">Navigation</span>
+                  <a href="#" className="font-bold hover:underline">Events</a>
+                  <a href="#" className="font-bold hover:underline">Workshops</a>
+                  <a href="#" className="font-bold hover:underline">Speakers</a>
+                  <a href="#" className="font-bold hover:underline">Gallery</a>
+               </div>
+               <div className="flex flex-col gap-4">
+                  <span className="font-black uppercase text-[#C4178A] text-sm">Connect</span>
+                  <a href="#" className="font-bold hover:underline">Register</a>
+                  <a href="#" className="font-bold hover:underline">Sponsor Us</a>
+                  <a href="#" className="font-bold hover:underline">Contact</a>
+               </div>
+            </div>
+         </div>
+
+         <div className="max-w-7xl mx-auto border-t-4 border-black mt-20 pt-10 flex flex-col md:flex-row justify-between gap-6 font-black uppercase text-xs">
+            <span>© 2026 DesignX festival — All Rights Reserved</span>
+            <div className="flex gap-8">
+               <a href="#">Privacy Policy</a>
+               <a href="#">Terms of Service</a>
+            </div>
+         </div>
+      </footer>
+    </div>
+  );
 }
+
+
